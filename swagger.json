@@ -1,0 +1,913 @@
+{
+  "openapi": "3.0.3",
+
+  "info": {
+    "version": "1.0.11",
+    "title": "Swagger Slim Moms - OpenAPI 3.0",
+    "description": "All about Slim Moms API"
+  },
+
+  "consume": ["application/json"],
+  "produces": ["application/json"],
+
+  "servers": [{ "url": "http://localhost:5001" }],
+
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Auth endpoints"
+    },
+    {
+      "name": "User",
+      "description": "User endpoints"
+    },
+    {
+      "name": "Daily-products",
+      "description": "Daily products"
+    },
+    {
+      "name": "Daily-diet-products",
+      "description": "Daily diet products"
+    }
+  ],
+
+  "paths": {
+    "/api/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User registration",
+
+        "parameters": [],
+        "security": [],
+
+        "requestBody": {
+          "description": "Registration object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistrationRequest"
+              }
+            }
+          }
+        },
+
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationResponse"
+                }
+              }
+            }
+          },
+
+          "400": {
+            "description": "Bad request (invalid request body)"
+          }
+        }
+      }
+    },
+
+    "/api/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User login",
+
+        "parameters": [],
+        "security": [],
+
+        "requestBody": {
+          "description": "Login object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+
+          "400": {
+            "description": "Invalid username or password supplied"
+          }
+        }
+      }
+    },
+
+    "/api/auth/logout": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "User logout",
+
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LogoutResponse"
+                }
+              }
+            }
+          },
+
+          "400": {
+            "description": "Invalid signature (bad token)"
+          }
+        }
+      }
+    },
+
+    "/api/users/update": {
+      "patch": {
+        "tags": ["User"],
+        "summary": "User update",
+
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+
+        "requestBody": {
+          "description": "User update",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserUpdateRequest"
+              }
+            }
+          }
+        },
+
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserUpdateResponse"
+                }
+              }
+            }
+          },
+
+          "400": {
+            "description": "Invalid request body"
+          }
+        }
+      }
+    },
+
+    "/api/users/current": {
+      "get": {
+        "tags": ["User"],
+        "summary": "User current",
+
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserCurrentResponse"
+                }
+              }
+            }
+          },
+
+          "400": {
+            "description": "Invalid request body"
+          }
+        }
+      }
+    },
+
+    "/api/diary": {
+      "post": {
+        "tags": ["Daily-products"],
+        "summary": "Add daily product",
+
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+
+        "requestBody": {
+          "description": "Product object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddDailyProductRequest"
+              }
+            }
+          }
+        },
+
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddDailyProductResponse"
+                }
+              }
+            }
+          },
+
+          "400": {
+            "description": "Bad request (invalid request body)"
+          }
+        }
+      },
+
+      "get": {
+        "tags": ["Daily-products"],
+        "summary": "Get daily product by date",
+
+        "parameters": [
+          {
+            "name": "Date",
+            "in": "path",
+            "description": "Date in query param, add Z to end of your date",
+            "example": "2022.12.25Z",
+            "required": true
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetDailyProductResponse"
+                }
+              }
+            }
+          },
+
+          "400": {
+            "description": "Bad request (invalid request query)"
+          }
+        }
+      },
+
+      "delete": {
+        "tags": ["Daily-products"],
+        "summary": "Delete product by id",
+
+        "parameters": [
+          {
+            "name": "ProductId",
+            "in": "path",
+            "description": "ProductId",
+            "example": "63a5974ca3917e5cba63f551",
+            "required": true
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteDailyProductResponse"
+                }
+              }
+            }
+          },
+
+          "400": {
+            "description": "Unautorized"
+          },
+
+          "404": {
+            "description": "Product with id: '${productId}'  not found"
+          }
+        }
+      }
+    },
+
+    "/api/bloodproducts": {
+      "post": {
+        "tags": ["Daily-diet-products"],
+        "summary": "Get Diet",
+
+        "parameters": [],
+        "security": [],
+
+        "requestBody": {
+          "description": "Blood diet object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetDietProductRequest"
+              }
+            }
+          }
+        },
+
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetDietProductResponse"
+                }
+              }
+            }
+          },
+
+          "400": {
+            "description": "Invalid request body"
+          },
+
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+
+    "/api/bloodproducts/all": {
+      "get": {
+        "tags": ["Daily-diet-products"],
+        "summary": "Get all diet produtcs",
+
+        "parameters": [],
+        "security": [],
+
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAllDietProductsResponse"
+                }
+              }
+            }
+          },
+
+          "400": {
+            "description": "Invalid request"
+          },
+
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+
+    "/api/bloodproducts/all/query": {
+      "get": {
+        "tags": ["Daily-diet-products"],
+        "summary": "Get query diet produtcs",
+
+        "parameters": [
+          {
+            "name": "title",
+            "in": "path",
+            "description": "title of search product",
+            "example": "Яйцо куриное (желток сухой)",
+            "required": true
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAllByQueryDietProductsRequest"
+                }
+              }
+            }
+          },
+
+          "400": {
+            "description": "Invalid request"
+          },
+
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+
+    "/api/bloodproducts/:id": {
+      "post": {
+        "tags": ["Daily-diet-products"],
+        "summary": "Get user diet produtcs",
+
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User id",
+            "example": "63a865cb90e609b21b2b248f",
+            "required": true
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUserDiatProductResponse"
+                }
+              }
+            }
+          },
+
+          "400": {
+            "description": "Invalid request"
+          },
+
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    }
+  },
+
+  "components": {
+    "schemas": {
+      "RegistrationRequest": {
+        "type": "object",
+        "required": [true],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User name",
+            "example": "Bob"
+          },
+          "email": {
+            "type": "string",
+            "description": "User email",
+            "example": "bob@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "description": "User password",
+            "example": "1234567"
+          }
+        }
+      },
+      "RegistrationResponse": {
+        "type": "object",
+        "properties": {
+          "response": {
+            "type": "string",
+            "description": "Status code",
+            "data": {
+              "user": "user name",
+              "email": "user email"
+            },
+            "example": {
+              "status": "Created",
+              "code": 201,
+              "data": {
+                "user": {
+                  "name": "bob",
+                  "email": "bob@gmail.com"
+                }
+              }
+            }
+          }
+        }
+      },
+
+      "LoginRequest": {
+        "type": "object",
+        "required": [true],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User email",
+            "example": "bob@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "description": "User password",
+            "example": "1234567"
+          }
+        }
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "response": {
+            "type": "object",
+            "description": "Status code",
+            "example": {
+              "status": "success",
+              "code": 200,
+              "data": {
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYTQ3YWU3NjU3YjBjM2Q4YzlmNDcwMCIsImlhdCI6MTY3MTcyNTQ5OCwiZXhwIjoxNjcxNzI5MDk4fQ.TFrEj-tRTCSsJz3i8kG-k6iOx_9NY7W0UeJuTXbw7OM",
+                "user": {
+                  "email": "bob@gmail.com",
+                  "name": "Bob"
+                }
+              }
+            }
+          }
+        }
+      },
+
+      "LogoutResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Status",
+            "example": 200
+          }
+        }
+      },
+
+      "UserUpdateRequest": {
+        "type": "object",
+        "required": [true],
+        "properties": {
+          "bloodType": {
+            "type": "number",
+            "description": "User bloodType",
+            "required": true,
+            "example": 2
+          },
+          "height": {
+            "type": "number",
+            "description": "User height",
+            "required": true,
+            "example": 180
+          },
+          "age": {
+            "type": "number",
+            "description": "User age",
+            "required": true,
+            "example": 25
+          },
+          "curWeight": {
+            "type": "number",
+            "description": "User currently weight",
+            "required": true,
+            "example": 65
+          },
+          "desWeight": {
+            "type": "number",
+            "description": "User want weight",
+            "required": true,
+            "example": 65
+          }
+        }
+      },
+      "UserUpdateResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Status",
+            "example": "success"
+          },
+          "code": {
+            "type": "number",
+            "description": "Code",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "example": {
+              "user": {
+                "type": "object",
+                "description": "User data",
+                "example": {
+                  "bloodType": 2,
+                  "height": 150,
+                  "age": 50,
+                  "curWeight": 65,
+                  "desWeight": 65,
+                  "dailyCalorie": 1177
+                },
+                "notRecProducts": "Array of not recomendet products"
+              }
+            }
+          }
+        }
+      },
+
+      "UserCurrentResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Status",
+            "example": "success"
+          },
+          "code": {
+            "type": "number",
+            "description": "Code",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "description": "User data",
+            "example": {
+              "user": {
+                "id": "63a865cb90e609b21b2b248f",
+                "name": "Rom",
+                "bloodType": 2,
+                "height": 150,
+                "age": 50,
+                "curWeight": 65,
+                "desWeight": 65,
+                "dailyCalorie": 1177,
+                "notRecProducts": "Array of not recomendet products"
+              }
+            }
+          }
+        }
+      },
+
+      "AddDailyProductRequest": {
+        "type": "object",
+        "required": [true],
+        "properties": {
+          "date": {
+            "type": "date",
+            "description": "date (YYYY.MM.DDZ)",
+            "required": true,
+            "example": "2022.12.25Z"
+          },
+          "product": {
+            "type": "string",
+            "description": "product name",
+            "required": true,
+            "example": "Омлет із сиром"
+          },
+          "weight": {
+            "type": "number",
+            "description": "product weight",
+            "required": true,
+            "example": 100
+          },
+          "baseCaloricity": {
+            "type": "number",
+            "description": "base caloricity ",
+            "required": true,
+            "example": 100
+          }
+        }
+      },
+      "AddDailyProductResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "succes"
+          },
+          "code": {
+            "type": "number",
+            "example": "201"
+          },
+          "result": {
+            "type": "object",
+            "example": {
+              "_id": "63a8bd60e2ff636010ce18f8",
+              "date": "2022-12-25T00:00:00.000Z",
+              "product": "Омлет із сиром",
+              "weight": 240,
+              "baseCaloricity": 50,
+              "calories": 120,
+              "owner": "63a865cb90e609b21b2b248f",
+              "__v": 0
+            }
+          }
+        }
+      },
+
+      "GetDailyProductResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "example": {
+              "result": [
+                {
+                  "_id": "63a8bd60e2ff636010ce18f8",
+                  "date": "2022-12-25T00:00:00.000Z",
+                  "product": "Омлет із сиром",
+                  "weight": 240,
+                  "baseCaloricity": 50,
+                  "calories": 120,
+                  "owner": "63a865cb90e609b21b2b248f",
+                  "__v": 0
+                }
+              ],
+              "date": "2022-12-23T08:30:45.846Z",
+              "caloricityPerDay": 410.4,
+              "dateFirstAdded": "2022-10-21T00:00:00.000Z"
+            }
+          }
+        }
+      },
+      "DeleteDailyProductResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "succes"
+          },
+          "code": {
+            "type": "number",
+            "example": "201"
+          },
+          "removedProduct": {
+            "type": "object",
+            "example": {
+              "_id": "63a870b7f36e599a23fb4a3d",
+              "date": "2022-12-25T15:48:04.975Z",
+              "product": "Омлет із сиром",
+              "weight": 120,
+              "baseCaloricity": 50,
+              "calories": 60,
+              "owner": "63a865cb90e609b21b2b248f",
+              "__v": 0
+            }
+          }
+        }
+      },
+
+      "GetDietProductRequest": {
+        "type": "object",
+        "required": [true],
+        "properties": {
+          "height": {
+            "type": "number",
+            "description": "user height",
+            "required": true,
+            "example": 180
+          },
+          "age": {
+            "type": "number",
+            "description": "user age",
+            "required": true,
+            "example": 25
+          },
+          "curWeight": {
+            "type": "number",
+            "description": "user currently weight",
+            "required": true,
+            "example": 65
+          },
+          "desWeight": {
+            "type": "number",
+            "description": "user want weight",
+            "required": true,
+            "example": 60
+          },
+          "bloodType": {
+            "type": "number",
+            "description": "user blood type",
+            "required": true,
+            "example": 2
+          }
+        }
+      },
+      "GetDietProductResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "succes"
+          },
+          "code": {
+            "type": "number",
+            "example": 200
+          },
+          "result": {
+            "example": {
+              "notRecProducts": {
+                "description": "Array of not recomendet products"
+              },
+              "dailyCalorie": 1400
+            }
+          }
+        }
+      },
+
+      "GetAllDietProductsResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "array",
+            "example": {
+              "_id": "5d51694802b2373622ff553b",
+              "categories": ["яйца"],
+              "weight": 100,
+              "title": {
+                "ru": "Яйцо куриное (желток сухой)",
+                "ua": "Яйце куряче (жовток сухий)"
+              },
+              "calories": 623,
+              "groupBloodNotAllowed": [null, true, false, false, false],
+              "__v": 0
+            }
+          }
+        }
+      },
+
+      "GetAllByQueryDietProductsRequest": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "array",
+            "example": {
+              "_id": "5d51694802b2373622ff553b",
+              "categories": ["яйца"],
+              "weight": 100,
+              "title": {
+                "ru": "Яйцо куриное (желток сухой)",
+                "ua": "Яйце куряче (жовток сухий)"
+              },
+              "calories": 623,
+              "groupBloodNotAllowed": [null, true, false, false, false],
+              "__v": 0
+            }
+          }
+        }
+      },
+
+      "GetUserDiatProductResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "code": {
+            "type": "number",
+            "example": 200
+          },
+          "data": {
+            "type": "array",
+            "example": {
+              "_id": "5d51694802b2373622ff5674",
+              "categories": ["мучные"],
+              "weight": 100,
+              "title": {
+                "ru": "Блины с грибами",
+                "ua": "Млинці з грибами"
+              },
+              "calories": 218,
+              "groupBloodNotAllowed": [null, true, true, true, true],
+              "__v": 0
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "securitySchemas": {
+    "Bearer": {
+      "type": "http",
+      "schema": "bearer",
+      "bearerFormat": "JWT"
+    }
+  }
+}
