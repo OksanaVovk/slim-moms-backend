@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 require('dotenv').config();
 const swaggerUi = require('swagger-ui-express');
@@ -15,7 +16,8 @@ const app = express();
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short';
 
 app.use(logger(formatsLogger));
-app.use(cors());
+app.use(cookieParser());
+app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
 app.use(express.json());
 
 app.use('/api/auth', authRouter);

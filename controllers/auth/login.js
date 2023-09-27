@@ -2,10 +2,10 @@ const { User } = require('../../models');
 const { RequestError } = require('../../helpers');
 const jwt = require('jsonwebtoken');
 
-const { SECRET_KEY } = process.env;
+const { SECRET_KEY, SECRET_KEY_REFRESH } = process.env;
 
 const login = async (req, res) => {
-  const { password, email, bloodType } = req.body;
+  const { password, email } = req.body;
   const user = await User.findOne({ email });
 
   if (!user || !user.comparePassword(password)) {
@@ -16,20 +16,37 @@ const login = async (req, res) => {
     id: user._id,
   };
 
-  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '1h' });
+  const token = jwt.sign(payload, SECRET_KEY, {
+    expiresIn: '5m',
+  });
+  const refreshToken = jwt.sign(payload, SECRET_KEY_REFRESH, {
+    expiresIn: '30d',
+  });
 
-  await User.findByIdAndUpdate(user._id, { token, bloodType });
+  await User.findByIdAndUpdate(user._id, { token, refreshToken });
+
+  res.cookie('refreshToken', refreshToken, {
+    maxAge: 30 * 24 * 60 * 60 * 100,
+    httpOnly: true,
+  });
 
   res.json({
     status: 'success',
     code: 200,
     data: {
       token,
+      refreshToken,
       user: {
         email,
         name: user.name,
+        bloodType: user.bloodType,
+        height: user.height,
+        age: user.age,
+        curWeight: user.curWeight,
+        desWeight: user.desWeight,
+        dailyCalorie: user.dailyCalorie,
+        notRecProducts: user.notRecProducts,
       },
-      bloodType,
     },
   });
 };

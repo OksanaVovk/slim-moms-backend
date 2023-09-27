@@ -7,7 +7,7 @@ const logout = async (req, res) => {
     { new: true }
   );
 
-  res.json({
+  res.json(204)({
     status: 'success',
   });
 };
