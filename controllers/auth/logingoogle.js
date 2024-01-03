@@ -56,7 +56,9 @@ const logingoogle = async (req, res) => {
     id: user._id,
   };
 
-  const token = jwt.sign(data, SECRET_KEY);
+  const token = jwt.sign(data, SECRET_KEY, {
+    expiresIn: '15m',
+  });
   const refreshToken = jwt.sign(data, SECRET_KEY_REFRESH, {
     expiresIn: '30d',
   });
