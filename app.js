@@ -20,7 +20,7 @@ app.use(cookieParser());
 app.use(
   cors({
     credentials: true,
-    origin: 'http://oksanavovk.github.io/slim-moms-frontend/',
+    origin: 'http://oksanavovk.github.io/slim-moms-frontend',
   })
 );
 // app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
