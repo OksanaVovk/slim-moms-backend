@@ -38,7 +38,7 @@ app.use(cookieParser());
 app.use(
   cors({
     credentials: true,
-    origin: ['http://oksanavovk.github.io', 'http://localhost:3000'],
+    origin: ['https://oksanavovk.github.io', 'http://localhost:3000'],
   })
 );
 // app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
